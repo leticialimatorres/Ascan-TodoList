@@ -94,8 +94,9 @@ body {
 	/* background: #ffffff; */
 	/* box-shadow: 0 0 10px rgba(191, 27, 155, 0.1); */
 	border-radius: 12px;
-	align-items: baseline;
-	align-content: flex-start;
+	/* align-items: baseline; */
+	/* align-content: flex-start; */
+	
   }
 
   #Add_data_priority {

@@ -2,9 +2,10 @@ import React from 'react';
 import './icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { connect } from 'react-redux'; // Import connect
-
+import { deleteTodo } from '../redux/todos'; // Verifique o caminho correto para o seu arquivo de ações
 import { UseSelector, useDispatch } from 'react-redux/es/hooks/useSelector';
 import {addTodo, toggleTodo} from '../redux/todos'
+import store from '../redux/store';
 
 class TodoList extends React.Component {
   state = {
@@ -29,9 +30,8 @@ class TodoList extends React.Component {
   };
 
   handleDeleteClick = (id) => {
-    this.setState((prevState) => ({
-      todos: prevState.todos.filter((todo) => todo.id !== id)
-    }));
+    
+    this.props.dispatch(deleteTodo({ id }));
   };
 
   handleInputChange = (event) => {
@@ -90,19 +90,10 @@ class TodoList extends React.Component {
     }
   };
 
-  // componentDidMount() {
-  //   const storedTodos = localStorage.getItem('todos');
-  //   if (storedTodos) {
-  //     this.setState({ todos: JSON.parse(storedTodos) });
-  //   }
-  // }
-
-  // componentDidUpdate() {
-  //   localStorage.setItem('todos', JSON.stringify(this.state.todos));
-  // }
 
   render() {
-    const { todos, completedTodos, newTodoText, newTodoDescription, newTodoDatetime,newTodoPriority} = this.state;
+    const { completedTodos, newTodoText, newTodoDescription, newTodoDatetime,newTodoPriority} = this.state;
+    const todos = store.getState().todos.todos;
 
     return (
       <div id="box">
@@ -154,7 +145,7 @@ class TodoList extends React.Component {
         </div>
 
         <div id="list-container">
-        <h2>Tarefas Pendentes</h2>
+        <h2>Minhas Tarefas</h2>
           <ul>
             {todos.map((todo) => (
               <li
@@ -197,7 +188,6 @@ class TodoList extends React.Component {
               </li>
             ))}
           </ul>
-          <h2>Tarefas Concluídas</h2>
           <ul>
             {completedTodos.map((todo) => (
               <li key={todo.id} className="completed">

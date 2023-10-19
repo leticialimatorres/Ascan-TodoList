@@ -1,8 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 // Load state from localStorage
-const initialState = JSON.parse(localStorage.getItem('todos')) || {
-  todos: [],
+const initialState = {
+  todos: JSON.parse(localStorage.getItem('todos'))?.todos || [],
 };
 
 const todosSlice = createSlice({
@@ -23,9 +23,15 @@ const todosSlice = createSlice({
         localStorage.setItem('todos', JSON.stringify(state));
       }
     },
+    deleteTodo: (state, action) => {
+      const { id } = action.payload;
+      state.todos = state.todos.filter((todo) => todo.id !== id);
+      // Save state to localStorage after deleting a todo
+      localStorage.setItem('todos', JSON.stringify(state));
+    },
   },
 });
 
-export const { addTodo, toggleTodo } = todosSlice.actions;
+export const { addTodo, toggleTodo, deleteTodo } = todosSlice.actions;
 
 export default todosSlice.reducer;
